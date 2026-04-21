@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Task Management System</title>
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<div class="page-shell">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">College Engineering Department</p>
+            <h1>Employee Task Management System</h1>
+            <p class="hero-copy">
+                Manage faculty records, assign departmental work, and track deadlines from one place.
+            </p>
+        </div>
+        <div class="hero-card">
+            <span>Live views</span>
+            <strong id="heroEmployeeCount">0 Employees</strong>
+            <strong id="heroTaskCount">0 Tasks</strong>
+            <p>Open the sections below to add, edit, filter, and review overdue work.</p>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <section class="panel form-panel">
+            <div class="panel-head">
+                <div>
+                    <p class="section-tag">Faculty</p>
+                    <h2>Employee Form</h2>
+                </div>
+                <button id="resetEmployeeBtn" class="ghost-btn" type="button">New Employee</button>
+            </div>
+
+            <form id="employeeForm" class="stack-form">
+                <input id="employeeId" type="hidden">
+                <label>
+                    Name
+                    <input id="employeeName" type="text" placeholder="Dr. Meera Sharma" required>
+                </label>
+                <label>
+                    Email
+                    <input id="employeeEmail" type="email" placeholder="meera.sharma@college.edu" required>
+                </label>
+                <label>
+                    Department
+                    <input id="employeeDepartment" type="text" placeholder="Computer Science and Engineering" required>
+                </label>
+                <label>
+                    Designation
+                    <input id="employeeDesignation" type="text" placeholder="Assistant Professor" required>
+                </label>
+                <button class="primary-btn" type="submit">Save Employee</button>
+            </form>
+        </section>
+
+        <section class="panel form-panel">
+            <div class="panel-head">
+                <div>
+                    <p class="section-tag">Tasks</p>
+                    <h2>Task Form</h2>
+                </div>
+                <button id="resetTaskBtn" class="ghost-btn" type="button">New Task</button>
+            </div>
+
+            <form id="taskForm" class="stack-form">
+                <input id="taskId" type="hidden">
+                <label>
+                    Title
+                    <input id="taskTitle" type="text" placeholder="Prepare NBA Accreditation Report" required>
+                </label>
+                <label>
+                    Description
+                    <textarea id="taskDescription" rows="4" placeholder="Add task details here..." required></textarea>
+                </label>
+                <label>
+                    Assigned Employee
+                    <select id="taskEmployee" required>
+                        <option value="">Select employee</option>
+                    </select>
+                </label>
+                <div class="split-fields">
+                    <label>
+                        Deadline
+                        <input id="taskDeadline" type="date" required>
+                    </label>
+                    <label>
+                        Status
+                        <select id="taskStatus" required>
+                            <option value="PENDING">Pending</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </label>
+                </div>
+                <label>
+                    Priority
+                    <select id="taskPriority" required>
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                    </select>
+                </label>
+                <button class="primary-btn" type="submit">Save Task</button>
+            </form>
+        </section>
+
+        <section class="panel table-panel">
+            <div class="panel-head">
+                <div>
+                    <p class="section-tag">Faculty</p>
+                    <h2>Employees</h2>
+                </div>
+                <button id="refreshEmployeesBtn" class="ghost-btn" type="button">Refresh</button>
+            </div>
+            <div id="employeesEmpty" class="empty-state">No employees yet. Add one to get started.</div>
+            <div id="employeesTableWrap" class="table-wrap hidden">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="employeesTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel table-panel">
+            <div class="panel-head">
+                <div>
+                    <p class="section-tag">Tasks</p>
+                    <h2>Task Board</h2>
+                </div>
+                <div class="toolbar">
+                    <select id="employeeFilter">
+                        <option value="">All Employees</option>
+                    </select>
+                    <button id="refreshTasksBtn" class="ghost-btn" type="button">Refresh</button>
+                </div>
+            </div>
+            <div id="tasksEmpty" class="empty-state">No tasks yet. Create one and it will show up here.</div>
+            <div id="taskCards" class="card-grid"></div>
+        </section>
+    </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

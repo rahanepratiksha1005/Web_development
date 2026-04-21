@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello-World UI</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="background-mesh">
+        <div class="blob shape-1"></div>
+        <div class="blob shape-2"></div>
+        <div class="blob shape-3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="glass-card">
+            <div class="logo-wrapper">
+                <div class="glowing-orb"></div>
+            </div>
+            <h1 class="main-title" th:text="${message}">Hello-World</h1>
+            <p class="subtitle">Welcome to your beautiful Spring Boot Application.</p>
+            
+            <div class="action-section">
+                <button class="btn btn-primary" onclick="loadFeatures(this)">Get Started</button>
+                <button class="btn btn-secondary" onclick="triggerAnimation(this)">Learn More</button>
+            </div>
+        </div>
+        
+        <!-- Target container for the newly added data -->
+        <div id="features-container" class="features-grid"></div>
+    </div>
+
+    <!-- Micro interactions logic -->
+    <script>
+        function triggerAnimation(button) {
+            button.classList.add('pulse');
+            setTimeout(() => {
+                button.classList.remove('pulse');
+            }, 600);
+        }
+
+        async function loadFeatures(button) {
+            triggerAnimation(button);
+            button.disabled = true;
+            button.innerText = "Loading...";
+
+            try {
+                const response = await fetch('/api/features');
+                const features = await response.json();
+                
+                const container = document.getElementById('features-container');
+                container.innerHTML = '';
+                
+                features.forEach((feature, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'feature-card';
+                    card.style.animationDelay = `${index * 0.15}s`;
+                    
+                    card.innerHTML = `
+                        <div class="feature-icon">${feature.icon}</div>
+                        <h3>${feature.title}</h3>
+                        <p>${feature.description}</p>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                button.style.display = 'none'; // hide the button after loading
+            } catch (error) {
+                console.error('Error fetching features:', error);
+                button.innerText = "Error Loading";
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

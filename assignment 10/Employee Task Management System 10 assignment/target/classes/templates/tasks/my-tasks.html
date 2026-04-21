@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tasks</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { display: inline; }
+        select { padding: 5px; }
+        .btn { padding: 5px 10px; border: none; cursor: pointer; background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h1>My Tasks - <span th:text="${employee.name}"></span></h1>
+    <a href="/">Back to Home</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.title}"></td>
+                <td th:text="${task.description}"></td>
+                <td th:text="${#temporals.format(task.deadline, 'yyyy-MM-dd')}"></td>
+                <td th:text="${task.status}"></td>
+                <td>
+                    <form th:action="@{/tasks/update-status/{id}(id=${task.id})}" method="post">
+                        <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                        <select name="status" required>
+                            <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
+                            <option value="In Progress" th:selected="${task.status == 'In Progress'}">In Progress</option>
+                            <option value="Completed" th:selected="${task.status == 'Completed'}">Completed</option>
+                        </select>
+                        <button type="submit" class="btn">Update</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

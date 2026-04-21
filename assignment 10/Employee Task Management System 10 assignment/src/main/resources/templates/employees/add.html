@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${employee.id != null} ? 'Edit Employee' : 'Add Employee'"></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { max-width: 400px; }
+        label { display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        .error { color: red; }
+        .btn { padding: 10px 15px; margin-top: 10px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <h1 th:text="${employee.id != null} ? 'Edit Employee' : 'Add Employee'"></h1>
+    <form th:action="@{/employees/save}" th:object="${employee}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{name}" id="name" required />
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+
+        <label for="email">Email:</label>
+        <input type="email" th:field="*{email}" id="email" required />
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+
+        <label for="department">Department:</label>
+        <input type="text" th:field="*{department}" id="department" required />
+        <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="error"></span>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/employees" class="btn btn-secondary">Cancel</a>
+    </form>
+</body>
+</html>
